@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testcjl
+  namespace: default
+  labels:
+    app: testcjl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: testcjl
+  template:
+    metadata:
+      name: testcjl
+      labels:
+        app: testcjl
+    spec:
+      containers:
+      - name: testcjl
+        image: nginxinc/nginx-unprivileged:alpine
+        resources:
+          limits:
+            cpu: 300m
+            memory: 250Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
